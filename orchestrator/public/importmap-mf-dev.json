@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@poliedro/orchestrator": "http://localhost:9000/poliedro-orchestrator.js",
+    "@poliedro/lib-test": "http://localhost:9001/poliedro-lib-test.js",
+    "@poliedro/lib-test-utils": "http://localhost:9002/poliedro-lib-test-utils.js"
+  }
+}

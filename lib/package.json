@@ -1,0 +1,67 @@
+{
+  "name": "bryann-library-template",
+  "version": "1.0.14",
+  "author": "Bryann Brandão",
+  "description": "",
+  "license": "",
+  "engines": {
+    "node": ">=16"
+  },
+  "main": "../ui/node_modules/bryann-library-template/dist/index.js",
+  "module": "../ui/node_modules/bryann-library-template/dist/index.js",
+  "types": "../ui/node_modules/bryann-library-template/dist/types.d.ts",
+  "scripts": {
+    "dev": "vite --open",
+    "build": "rollup -c --bundleConfigAsCjs",
+    "sb": "storybook dev -p 6006",
+    "sb:build": "storybook build",
+    "prettier:check": "prettier . --check",
+    "prettier:format": "prettier . --write"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-inject": "^5.0.5",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@storybook/addon-essentials": "8.3.6",
+    "@storybook/addon-interactions": "8.3.6",
+    "@storybook/addon-links": "8.3.6",
+    "@storybook/addon-webpack5-compiler-swc": "1.0.5",
+    "@storybook/blocks": "8.3.6",
+    "@storybook/manager-api": "^8.3.6",
+    "@storybook/react": "8.3.6",
+    "@storybook/react-webpack5": "8.3.6",
+    "@storybook/theming": "^8.3.6",
+    "@testing-library/react": "^14.1.2",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "identity-obj-proxy": "^3.0.0",
+    "prettier": "3.3.3",
+    "rollup": "^4.9.1",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "storybook": "8.3.6",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.4.9"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@wiris/mathtype-froala": "^8.11.1",
+    "@wiris/mathtype-froala3": "^7.31.1",
+    "@wiris/mathtype-html-integration-devkit": "^1.17.5",
+    "crypto-browserify": "^3.12.1",
+    "froala-editor": "^4.3.1",
+    "react-froala-wysiwyg": "^4.3.1"
+  }
+}

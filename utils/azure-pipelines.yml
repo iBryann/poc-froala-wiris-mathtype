@@ -1,0 +1,146 @@
+trigger:
+  branches:
+    include:
+      - 'main'
+      - 'staging'
+      - 'development'
+
+pool:
+  vmImage: 'ubuntu-22.04'
+
+variables:
+  - group: mf_utils_${{ variables['Build.SourceBranchName'] }}
+
+stages:
+  - stage: build_app
+    displayName: Build and publish
+    jobs:
+      - job:
+        displayName: Build and Publish Tasks
+        steps:
+          - task: NodeTool@0
+            displayName: 'Use Node 18.x'
+            inputs:
+              versionSpec: 18.x
+
+          - script: |
+              npm install -g pnpm@7.32.2
+              pnpm install
+            displayName: 'Pnpm install'
+
+          - powershell: |
+              "REACT_APP_BFF_URL=$(REACT_APP_BFF_URL)" >> .env
+            env:
+              REACT_APP_BFF_URL: $(REACT_APP_BFF_URL)
+            displayName: "Config Envs"
+            
+          - script: |
+              pnpm build
+            displayName: 'Build project'
+
+          - task: AzureCLI@2
+            displayName: 'Clear Blob'
+            inputs:
+              azureSubscription: $(SERVICE_CONNECTION)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: 'az storage blob delete-batch --account-name $(STORAGE_NAME) --source "$(CONTAINER_NAME)" --pattern "$(DIRECTORY_NAME)/*" --account-key $(ACCOUNT_KEY)'
+
+          - task: AzureCLI@2
+            displayName: 'Upload project'
+            inputs:
+              azureSubscription: $(SERVICE_CONNECTION)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: 'az storage blob upload-batch --overwrite true --account-name $(STORAGE_NAME) --destination "$(CONTAINER_NAME)/$(DIRECTORY_NAME)" --source ''$(Build.Repository.LocalPath)/dist'' --account-key $(ACCOUNT_KEY)'
+
+  - stage: update_version
+    displayName: Update version
+    dependsOn: build_app
+    condition: and(eq(variables['build.sourceBranchName'], 'main'), in(dependencies.build_app.result, 'Succeeded'))
+
+    jobs:
+      - job: UpdateVersion
+        steps:
+          - checkout: self
+            persistCredentials: true
+
+          - task: gitversion/setup@0
+            inputs:
+              versionSpec: '5.x'
+              includePrerelease: true
+              preferLatestVersion: true
+
+          - task: gitversion/execute@0
+            displayName: Calculating version
+            inputs:
+              useConfigFile: True
+              configFilePath: '.azuredevops/gitversion.yml'
+
+          # Update Build.BuildNumber to use SemVer, as by default it uses FullSemVer
+          - pwsh: |
+              Write-Host "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"
+            displayName:
+              Update Build.BuildNumber
+
+              # Adds the tag for the calculated semantic version
+          - task: PowerShell@2
+            displayName: Adding git release tag
+            inputs:
+              targetType: inline
+              script: |
+                Write-Host "Configuring git author info.." -ForegroundColor Cyan
+                git config user.email "Azure DevOps pipeline"
+                git config user.name "Azure.Devops@pipeline.com"
+                Write-Host "Adding git tag for release $(GitVersion.SemVer).." -ForegroundColor Cyan
+                git tag -a $("v$(GitVersion.SemVer)") -m $("Release $(GitVersion.SemVer)")
+                Write-Host "Doing git push.." -ForegroundColor Cyan
+                git push --tags
+                Write-Host "Done." -ForegroundColor Cyan
+
+          # Generates a release notes file
+          - task: XplatGenerateReleaseNotes@4
+            displayName: 'Generate release notes'
+            inputs:
+              outputfile: '$(System.DefaultWorkingDirectory)\releasenotes.md'
+              templateLocation: 'File'
+              customHandlebarsExtensionCode: |
+                module.exports = {date_formatter() {
+                const date_original = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const date = date_original.toLocaleDateString('pt-BR', options);
+                return date;
+                }};
+
+              templatefile: '.azuredevops/release-notes-template.md'
+              dumpPayloadToConsole: true
+              dumpPayloadToFile: true
+              SortWi: true
+              SortCS: true
+              replaceFile: true
+              getParentsAndChildren: false
+              searchCrossProjectForPRs: true
+              getAllParents: false
+              getIndirectPullRequests: false
+              stopOnError: true
+              considerPartiallySuccessfulReleases: false
+              checkForManuallyLinkedWI: false
+              wiqlFromTarget: 'WorkItem'
+              checkStage: false
+              getPRDetails: true
+
+          # Publishes the release notes in the project wiki
+          - task: WikiUpdaterTask@2
+            displayName: 'Publish to the wiki'
+            inputs:
+              repo: 'https://dev.azure.com/poliedro/plataforma-novo-conteudo/_git/plataforma-novo-conteudo.wiki' #REPLACE THIS!! NB. use _git instead of _wiki/wikis in the uri
+              filename: 'Release-Notes-UI.md' #Note: want a space in the name of the page? Use a '-' here!
+              replaceFile: false
+              appendToFile: false
+              dataIsFile: true
+              sourceFile: '$(System.DefaultWorkingDirectory)\releasenotes.md'
+              message: 'Update from Pipeline'
+              gitname: $(Release.RequestedFor)
+              gitemail: $(Release.RequestedForEmail)
+              useAgentToken: true
+              localpath: '$(System.DefaultWorkingDirectory)\repo'
