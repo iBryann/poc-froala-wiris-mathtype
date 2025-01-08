@@ -19,7 +19,7 @@ export const App = () => {
       <br />
       <br />
       <br />
-      <EditorView content={model} />
+      <EditorView content={model} mode='image' />
     </>
   );
 };

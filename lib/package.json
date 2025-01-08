@@ -7,9 +7,9 @@
   "engines": {
     "node": ">=16"
   },
-  "main": "../ui/node_modules/bryann-library-template/dist/index.js",
-  "module": "../ui/node_modules/bryann-library-template/dist/index.js",
-  "types": "../ui/node_modules/bryann-library-template/dist/types.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/types.d.ts",
   "scripts": {
     "dev": "vite --open",
     "build": "rollup -c --bundleConfigAsCjs",
