@@ -9,15 +9,15 @@ const content =
 
 export const App = () => {
   const [model, setModel] = useState(content);
-  const [model2, setModel2] = useState(content);
+  // const [model2, setModel2] = useState(content);
 
   return (
     <>
       <Editor value={model} onChangeValue={setModel} />
       <EditorView content={model} />
-      --------------
+      {/* --------------
       <Editor value={model2} onChangeValue={setModel2} />
-      <EditorView content={model2} />
+      <EditorView content={model2} /> */}
     </>
   );
 };
