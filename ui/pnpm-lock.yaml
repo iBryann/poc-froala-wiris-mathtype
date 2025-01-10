@@ -18,8 +18,8 @@ importers:
         specifier: ^1.17.5
         version: 1.17.5
       bryann-library-template:
-        specifier: 1.0.16
-        version: 1.0.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1)
+        specifier: ^1.0.18
+        version: 1.0.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1)
       froala-editor:
         specifier: ^4.3.1
         version: 4.3.1
@@ -1514,8 +1514,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  bryann-library-template@1.0.16:
-    resolution: {integrity: sha512-MQT+20AYvSpveNf+FJHS0kpgZD530qHlwILfBMDJrHmoO4V3IH5d+QgCSl2LhjmJVxygnQ6+2kVwwFrQGQHi/w==}
+  bryann-library-template@1.0.18:
+    resolution: {integrity: sha512-b4e9T8sxcFLB8kcZD+OUYwa6ZcB51mBjuDsf44BXJc3SOJpWFFjmdp5z1ujSYGuGVKLdnMie9kRrtqJMyY+NMQ==}
     engines: {node: '>=16'}
     peerDependencies:
       react: ^18.2.0
@@ -5527,7 +5527,7 @@ snapshots:
       node-releases: 2.0.19
       update-browserslist-db: 1.1.1(browserslist@4.24.3)
 
-  bryann-library-template@1.0.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1):
+  bryann-library-template@1.0.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1):
     dependencies:
       '@wiris/mathtype-froala': 8.11.1
       '@wiris/mathtype-froala3': 7.31.1(webpack@5.97.1)
