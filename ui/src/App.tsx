@@ -9,15 +9,25 @@ const content =
 
 export const App = () => {
   const [model, setModel] = useState(content);
-  // const [model2, setModel2] = useState(content);
+  const [model2, setModel2] = useState(content);
 
   return (
     <>
-      <Editor value={model} onChangeValue={setModel} />
+    313121321
+      <Editor
+        label='Editor'
+        value={model}
+        onChangeValue={setModel}
+        // required
+        // disabled
+        feedbackShow
+        feedbackType='info'
+        feedbackMessage='Feedback message'
+      />
       <EditorView content={model} />
-      {/* --------------
+      --------------
       <Editor value={model2} onChangeValue={setModel2} />
-      <EditorView content={model2} /> */}
+      <EditorView content={model2} />
     </>
   );
 };

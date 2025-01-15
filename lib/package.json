@@ -37,7 +37,6 @@
     "@storybook/react": "8.3.6",
     "@storybook/react-webpack5": "8.3.6",
     "@storybook/theming": "^8.3.6",
-    "@testing-library/react": "^14.1.2",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
@@ -58,10 +57,10 @@
   },
   "dependencies": {
     "@wiris/mathtype-froala": "^8.11.1",
-    "@wiris/mathtype-froala3": "^7.31.1",
     "@wiris/mathtype-html-integration-devkit": "^1.17.5",
     "crypto-browserify": "^3.12.1",
     "froala-editor": "^4.3.1",
-    "react-froala-wysiwyg": "^4.3.1"
+    "react-froala-wysiwyg": "^4.3.1",
+    "styled-components": "^6.1.14"
   }
 }

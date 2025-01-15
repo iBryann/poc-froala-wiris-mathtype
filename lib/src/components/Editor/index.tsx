@@ -6,6 +6,10 @@ import 'froala-editor/js/languages/pt_br.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import { TEditor } from './types';
+import { Feedback } from '../Feedback';
+import { Label } from '../Label';
+import { Container } from './styles';
+import { COLORS } from '../Feedback/types';
 
 // PRD
 import 'froala-editor';
@@ -23,7 +27,18 @@ import '@wiris/mathtype-froala';
 //   });
 // }
 
-export const Editor = ({ value = '', licenseKey, onChangeValue = () => {} }: TEditor) => {
+export const Editor = ({
+  label = '',
+  value = '',
+  required,
+  disabled = false,
+  className = '',
+  licenseKey,
+  feedbackShow,
+  feedbackType = 'default',
+  feedbackMessage,
+  onChangeValue = () => {}
+}: TEditor) => {
   const froalaConfig = useMemo(
     () => ({
       key: licenseKey,
@@ -44,9 +59,10 @@ export const Editor = ({ value = '', licenseKey, onChangeValue = () => {} }: TEd
         'formatUL',
         'formatOL',
         '|',
-        'lineHeight',
         'indent',
         'outdent',
+        '|',
+        'lineHeight',
         '|',
         'undo',
         'redo',
@@ -92,13 +108,28 @@ export const Editor = ({ value = '', licenseKey, onChangeValue = () => {} }: TEd
   );
 
   return (
-    <FroalaEditorComponent
-      config={froalaConfig}
-      model={value}
-      onModelChange={onChangeValue}
-      onManualControllerReady={(options: any) => {
-        options.initialize();
-      }}
-    />
+    <Container
+      className={'t-richtext ' + className}
+      aria-disabled={disabled}
+      color={COLORS[feedbackType]}
+    >
+      <Label label={label} required={required} disabled={disabled} />
+
+      <FroalaEditorComponent
+        config={froalaConfig}
+        model={value}
+        onModelChange={onChangeValue}
+        onManualControllerReady={(options: any) => {
+          options.initialize();
+        }}
+      />
+
+      <Feedback
+        disabled={disabled}
+        feedbackShow={feedbackShow}
+        feedbackMessage={feedbackMessage}
+        feedbackType={feedbackType}
+      />
+    </Container>
   );
 };

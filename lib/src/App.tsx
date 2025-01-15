@@ -11,7 +11,16 @@ export const App = () => {
 
   return (
     <>
-      <Editor value={model} onChangeValue={setModel} />
+      <Editor
+        label='Título do campo'
+        value={model}
+        onChangeValue={setModel}
+        feedbackShow
+        feedbackType='success'
+        feedbackMessage='Texto de apoio'
+        disabled={false}
+        required={false}
+      />
       <br />
       <br />
       <br />
