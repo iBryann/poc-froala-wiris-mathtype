@@ -10,6 +10,7 @@ import { Feedback } from '../Feedback';
 import { Label } from '../Label';
 import { Container } from './styles';
 import { COLORS } from '../Feedback/types';
+import { TOOLBAR } from './toolbar';
 
 // PRD
 import 'froala-editor';
@@ -43,56 +44,11 @@ export const Editor = ({
     () => ({
       key: licenseKey,
       language: 'pt_br',
-      toolbarButtons: [
-        'fontFamily',
-        'fontSize',
-        '|',
-        'bold',
-        'italic',
-        'underline',
-        '|',
-        'alignLeft',
-        'alignCenter',
-        'alignRight',
-        'alignJustify',
-        '|',
-        'formatUL',
-        'formatOL',
-        '|',
-        'indent',
-        'outdent',
-        '|',
-        'lineHeight',
-        '|',
-        'undo',
-        'redo',
-        '|',
-        'insertLink',
-        'insertImage',
-        'wirisEditor',
-        'wirisChemistry'
-      ],
-      imageEditButtons: [
-        'wirisEditor',
-        'wirisChemistry',
-        '|',
-        'imageReplace',
-        'imageAlign',
-        'imageRemove',
-        '|',
-        'imageLink',
-        'linkOpen',
-        'linkEdit',
-        'linkRemove',
-        '-',
-        'imageDisplay',
-        'imageStyle',
-        'imageAlt',
-        'imageSize'
-      ],
       htmlAllowedTags: ['.*'],
       htmlAllowedAttrs: ['.*'],
       htmlAllowedEmptyTags: ['mprescripts', 'none'],
+      toolbarResponsiveToEditor: true,
+      ...TOOLBAR,
       events: {
         initialized() {
           // Evite chamar o parser antes do DOM estar pronto
